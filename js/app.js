@@ -65,6 +65,23 @@ function table(title,headers,rows){
  const body=el('tbody');for(const row of rows){const tr=el('tr');row.forEach((v,i)=>tr.append(el(i?'td':'th',String(v),i?{class:'notes'}:{scope:'row'})));body.append(tr);}
  t.append(body);wrap.append(t);return wrap;
 }
+function responseLegend(statuses, technicalTable) {
+ const section=el('section',undefined,{'aria-labelledby':'response-legend-heading'});
+ section.append(el('h4','Response colour legend',{id:'response-legend-heading'}));
+ const list=el('ul',undefined,{class:'response-legend'});
+ for(const status of statuses){
+  const item=el('li',undefined,{'data-response':status});
+  item.append(el('span',undefined,{class:'response-swatch','aria-hidden':'true'}),el('span',status));
+  list.append(item);
+ }
+ section.append(list);
+ for(const row of technicalTable.querySelectorAll('tbody tr')){
+  const cell=row.cells[3];
+  cell.classList.add('response-highlight');
+  cell.dataset.response=cell.textContent;
+ }
+ return section;
+}
 function metric(label,value){const d=el('div',undefined,{class:'metric'});d.append(el('span',label),el('strong',value));return d;}
 let previousStatus = null;
 function render(){
@@ -78,7 +95,7 @@ function render(){
  const severity=table('Responses by severity',['Severity',...s.statuses],s.severity.map(v=>[v.severity,...v.counts]));
  const technical=table('Criterion-level results',['Success criterion','Level','Severity','Response','Points awarded / possible','Notes / evidence'],r.technical.map(i=>[i.id+' '+i.title,i.level,i.severity,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.technicalNotes[i.id]||'—']));
  const governance=table('Governance results',['Question','Response','Points awarded / possible','Notes / evidence'],r.governance.map(i=>[i.title,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.governanceNotes[i.id]||'—']));
- target.replaceChildren(overallChart(r,complete),el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),statusChart(s,config.criteria.length,status),severityChart(s,severity),technical,el('h3','Vendor governance summary'),governance);
+ target.replaceChildren(overallChart(r,complete),el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),statusChart(s,config.criteria.length,status),severityChart(s,severity),responseLegend(s.statuses,technical),technical,el('h3','Vendor governance summary'),governance);
 }
 // Announce only changes to the score, progress or final risk rating.
 function returnStatus(result, complete) {
