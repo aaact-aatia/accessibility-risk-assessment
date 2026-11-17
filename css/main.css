@@ -23,3 +23,16 @@
 thead th{overflow-wrap:normal;word-break:normal;hyphens:none}
 .table-scroll[aria-label="Criterion-level results"] tr > :nth-child(2),
 .table-scroll[aria-label="Criterion-level results"] tr > :nth-child(3){white-space:nowrap;overflow-wrap:normal}
+
+/* Criterion response tints and matching legend. Text is black for AAA contrast. */
+[data-response="Support"]{--response-tint:#dff3e3}
+[data-response="Partially Support"]{--response-tint:#fff4cc}
+[data-response="Does Not Support"]{--response-tint:#f9d9dd}
+[data-response="Not Applicable"]{--response-tint:#ddeffd}
+[data-response="Not Tested"]{--response-tint:#e6e6e6}
+[data-response="Unanswered"]{--response-tint:#eee8f8}
+.response-highlight{background:var(--response-tint,#fff);color:#000}
+.response-legend{display:flex;flex-wrap:wrap;gap:.65rem 1.25rem;list-style:none;padding:0;margin:.5rem 0 1rem}
+.response-legend li{display:flex;align-items:center;gap:.5rem;color:#000;background:#fff}
+.response-swatch{display:inline-block;width:1.25rem;height:1.25rem;flex:none;background:var(--response-tint,#fff);border:1px solid #182b3e}
+@media(forced-colors:active){.response-swatch{border-color:CanvasText}.response-highlight{background:Canvas;color:CanvasText}}
