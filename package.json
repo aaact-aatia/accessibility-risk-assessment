@@ -1,0 +1,8 @@
+{
+  "name": "accessibility-risk-assessment",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
