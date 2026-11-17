@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility Risk Assessment Tool</title>
+<link rel="stylesheet" href="./css/main.css">
+<link rel="stylesheet" href="./css/print.css" media="print">
+<script type="module" src="./js/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header><div class="wrap"><p class="eyebrow">Procurement decision support · Proof of concept</p><h1>Accessibility Risk Assessment Tool</h1><p>Evaluate a product using its Accessibility Conformance Report (ACR).</p></div></header>
+<main id="main" class="wrap">
+<noscript><p>This application requires JavaScript to calculate scores.</p></noscript>
+<p id="loading" role="status">Loading assessment configuration…</p>
+<div id="application" hidden>
+<p class="intro">This tool uses 49 weighted WCAG 2.1 Level A and AA criteria and four vendor governance questions. Scores support comparative risk analysis; they do not establish accessibility conformance. Review vendor evidence and conduct accessibility testing alongside this assessment.</p>
+<nav aria-label="Assessment sections"><ul><li><a href="#information">Product information</a></li><li><a href="#technical">Technical accessibility</a></li><li><a href="#governance">Vendor governance</a></li><li><a href="#report">Results</a></li></ul></nav>
+<section class="panel" aria-labelledby="transfer-heading">
+<h2 id="transfer-heading">Assessment files</h2>
+<p>Responses stay on this page and are not automatically saved. Export a JSON file before leaving if you want to resume later. Imported files replace the current assessment only after confirmation.</p>
+<div class="actions"><button id="export" type="button">Export assessment (JSON)</button><button id="import" type="button" class="secondary">Import assessment (JSON)</button><button id="reset" type="button" class="secondary">New assessment</button></div>
+<input id="file" type="file" accept=".json,application/json" hidden>
+<p id="message" role="status"></p>
+</section>
+<form id="assessment">
+<section id="information" class="panel" aria-labelledby="information-heading">
+<h2 id="information-heading">1. Product information</h2>
+<p>Fields marked required must be completed before finalizing the assessment.</p>
+<div id="fields" class="fields"></div>
+</section>
+<section id="technical" class="panel" aria-labelledby="technical-heading">
+<h2 id="technical-heading">2. Technical accessibility</h2>
+<p>Choose the vendor response for each criterion. All criteria must have an explicit response. Add notes or evidence where useful.</p>
+<details><summary>Response guidance and scoring methodology</summary>
+<ul><li>Support: sufficient evidence that the criterion is fully met (100%).</li><li>Partially Support: barriers exist, but functionality remains partially accessible (50%).</li><li>Does Not Support: the criterion is unmet or significant barriers are documented (0%).</li><li>Not Applicable: genuinely inapplicable or not present in the report, as specified by the original methodology (100%).</li><li>Not Tested: no testing reported (0%).</li></ul>
+<p>Critical criteria are worth 3.8125 points each; High 2; Medium 1.5; Low 1. The 49-criterion source methodology excludes 4.1.1 Parsing. The technical maximum is 90 points.</p></details>
+<div id="criteria"></div>
+</section>
+<section id="governance" class="panel" aria-labelledby="governance-heading">
+<h2 id="governance-heading">3. Vendor governance</h2>
+<p>Yes and Not Required receive full points; No receives zero. The governance maximum is 10 points.</p>
+<div id="questions"></div>
+</section>
+<button type="submit">Review completed assessment</button>
+</form>
+<section id="report" class="panel" aria-labelledby="report-heading">
+<h2 id="report-heading" tabindex="-1">4. Assessment results</h2>
+<p id="report-state"></p>
+<div id="results"></div>
+<button type="button" id="print" class="secondary">Print HTML report</button>
+<p class="print-note">Printing is provided for convenience and does not guarantee a tagged, accessible PDF.</p>
+</section>
+</div>
+</main>
+<footer class="wrap"><p>Proof of concept · Scoring methodology version 1 · <a href="https://github.com/aaact-aatia/accessibility-risk-assessment">Source code and feedback on GitHub</a></p></footer>
+</body>
+</html>
