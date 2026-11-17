@@ -125,6 +125,22 @@ async function init(){
   link.href=url;link.download=(a.information.product.replace(/[^a-z0-9_-]+/gi,'-').slice(0,80)||'assessment')+'.json';
   document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);$('message').textContent='Assessment export requested.';
  });
+ $('load-sample').addEventListener('click',async()=>{
+  const id=$('sample').value;
+  const label=$('sample').selectedOptions[0].textContent;
+  if(!confirm('Replace the current assessment with this sample? Export first if you need a copy.'))return;
+  const button=$('load-sample');
+  button.disabled=true;
+  try{
+   const response=await fetch('./data/samples/'+encodeURIComponent(id)+'.json');
+   if(!response.ok)throw Error('Unable to load sample assessment.');
+   const sample=await response.json();
+   validateImport(sample);
+   apply(sample);
+   $('message').textContent='Sample assessment loaded: '+label+'.';
+  }catch(error){$('message').textContent='Sample could not be loaded: '+error.message;}
+  finally{button.disabled=false;}
+ });
  $('import').addEventListener('click',()=>$('file').click());
  $('file').addEventListener('change',async()=>{
   const file=$('file').files[0];if(!file)return;
