@@ -22,6 +22,19 @@
 <p>Responses stay on this page and are not automatically saved. Export a JSON file before leaving if you want to resume later. Imported files replace the current assessment only after confirmation.</p>
 <div class="actions"><button id="export" type="button">Export assessment (JSON)</button><button id="import" type="button" class="secondary">Import assessment (JSON)</button><button id="reset" type="button" class="secondary">New assessment</button></div>
 <input id="file" type="file" accept=".json,application/json" hidden>
+<h3>Load a sample assessment</h3>
+<p id="sample-help">Use fictional data to explore the tool. Loading a sample replaces the current assessment after confirmation.</p>
+<div class="fields"><div><label for="sample">Sample assessment</label>
+<select id="sample" aria-describedby="sample-help">
+<option value="original-example">Original spreadsheet example (75.91)</option>
+<option value="perfect-score">Perfect score (100)</option>
+<option value="low-risk">Low risk (94)</option>
+<option value="moderate-risk">Moderate risk (86.19)</option>
+<option value="high-risk">High risk (78.88)</option>
+<option value="critical-risk">Critical risk (10)</option>
+<option value="incomplete">Incomplete assessment</option>
+</select></div></div>
+<p><button type="button" id="load-sample" class="secondary">Load sample assessment</button></p>
 <p id="message" role="status"></p>
 </section>
 <form id="assessment">
