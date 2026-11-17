@@ -73,14 +73,12 @@ function render(){
  const complete=!!r.risk && valid;
  returnStatus(r, complete);
  $('report-state').textContent=complete?'Complete assessment · '+config.standard:'Incomplete assessment — '+r.answered+' of '+r.count+' responses entered. A final risk rating requires all responses and valid product information.';
- const metrics=el('div',undefined,{class:'metrics'});
- metrics.append(metric('Technical score',fmt(r.technicalScore)+' / 90'),metric('Governance score',fmt(r.governanceScore)+' / 10'),metric('Overall score',fmt(r.overall)+' / 100'),metric('Risk rating',complete?r.risk:'Pending'));
  const info=el('dl');for(const [id,label] of fields)info.append(el('dt',label),el('dd',a.information[id]||'Not provided'));
  const status=table('Conformance status summary',['Response','Count','Share of 49 criteria'],s.statuses.map((v,i)=>[v,s.counts[i],(s.counts[i]/config.criteria.length*100).toFixed(1)+'%']));
  const severity=table('Responses by severity',['Severity',...s.statuses],s.severity.map(v=>[v.severity,...v.counts]));
  const technical=table('Criterion-level results',['Success criterion','Level','Severity','Response','Points awarded / possible','Notes / evidence'],r.technical.map(i=>[i.id+' '+i.title,i.level,i.severity,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.technicalNotes[i.id]||'—']));
  const governance=table('Governance results',['Question','Response','Points awarded / possible','Notes / evidence'],r.governance.map(i=>[i.title,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.governanceNotes[i.id]||'—']));
- target.replaceChildren(metrics,overallChart(r),el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),statusChart(s,config.criteria.length,status),severityChart(s,severity),technical,el('h3','Vendor governance summary'),governance);
+ target.replaceChildren(overallChart(r,complete),el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),statusChart(s,config.criteria.length,status),severityChart(s,severity),technical,el('h3','Vendor governance summary'),governance);
 }
 // Announce only changes to the score, progress or final risk rating.
 function returnStatus(result, complete) {
