@@ -2,3 +2,5 @@ body{background:white;color:black;font-size:10pt}header,footer,.skip,nav,#applic
 .chart-dialog,.chart-dialog-button{display:none!important}.chart-print-table{display:block}.chart-panel{border:0;padding:0;break-inside:auto}.chart-track,.chart-fill{print-color-adjust:exact;-webkit-print-color-adjust:exact}.chart-row{break-inside:avoid}.severity-charts{display:block}.severity-chart{break-inside:avoid;margin:0 0 1rem}.chart-print-table .table-scroll{overflow:visible}
 
 .risk-summary{break-inside:avoid}.risk-track,.risk-segment,.risk-key,.risk-pointer{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+
+.response-highlight,.response-swatch{print-color-adjust:exact;-webkit-print-color-adjust:exact}.response-legend{break-inside:avoid}
