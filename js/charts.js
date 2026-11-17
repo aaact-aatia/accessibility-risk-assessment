@@ -18,9 +18,9 @@ function bar(label, value, maximum, detail, color) {
  track.append(fill); row.append(line,track);
  return row;
 }
-function chart(title, id) {
+function chart(title, id, headingTag='h4') {
  const section = make('section',undefined,'chart-panel');
- const heading = make('h4',title); heading.id=id+'-heading';
+ const heading = make(headingTag,title); heading.id=id+'-heading';
  section.setAttribute('aria-labelledby',heading.id);
  section.append(heading);
  return section;
@@ -42,7 +42,7 @@ function dataDialog(section, title, id, data) {
  section.append(button,dialog,print);
 }
 export function overallChart(result) {
- const section=chart('Score breakdown','score-chart');
+ const section=chart('Score breakdown','score-chart','h3');
  const list=make('ul',undefined,'chart-bars');
  list.append(bar('Overall score',result.overall,100,result.overall.toFixed(2)+' / 100',palette[3]),
  bar('Technical accessibility',result.technicalScore,90,result.technicalScore.toFixed(2)+' / 90',palette[0]),
