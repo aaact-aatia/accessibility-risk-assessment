@@ -42,13 +42,46 @@ function dataDialog(section, title, id, data) {
  const print=make('div',undefined,'chart-print-table'); print.append(data.cloneNode(true));
  section.append(button,dialog,print);
 }
-export function overallChart(result) {
- const section=chart('Score breakdown','score-chart','h3');
- const list=make('ul',undefined,'chart-bars');
- list.append(bar('Overall score',result.overall,100,result.overall.toFixed(2)+' / 100',palette[0]),
- bar('Technical accessibility',result.technicalScore,90,result.technicalScore.toFixed(2)+' / 90',palette[3]),
- bar('Vendor governance',result.governanceScore,10,result.governanceScore.toFixed(2)+' / 10',palette[2]));
- section.append(list);return section;
+export function overallChart(result, complete) {
+ const section=chart('Overall assessment score','score-chart','h3');
+ section.classList.add('risk-summary');
+ section.append(make('p',result.overall.toFixed(2)+' / 100','risk-score'));
+ section.append(make('p',complete?result.risk:'Risk rating pending (provisional score)','risk-rating'));
+ const bands=[["Critical risk",70,"#881f28","0–<70"],["High risk",10,"#fff4c2","70–<80"],["Moderate risk",10,"#714500","80–<90"],["Low risk",10,"#e6f5cf","90–100"]];
+ const scale=make('div',undefined,'risk-scale');
+ scale.setAttribute('aria-hidden','true');
+ const track=make('div',undefined,'risk-track');
+ for(const [label,width,color] of bands){
+  const segment=make('div',undefined,'risk-segment');
+  segment.style.flexBasis=width+'%';
+  segment.style.backgroundColor=color;
+  track.append(segment);
+ }
+ const pointerTrack=make('div',undefined,'risk-pointer-track');
+ const pointer=make('div',undefined,'risk-pointer');
+ const position=Math.max(0,Math.min(100,result.overall));
+ pointer.style.left=position+'%';
+ pointerTrack.append(pointer);
+ scale.append(track,pointerTrack);
+ section.append(scale);
+ const legend=make('ul',undefined,'risk-legend');
+ for(const [label,width,color,range] of bands){
+  const item=make('li');
+  const key=make('span',undefined,'risk-key');
+  key.style.backgroundColor=color;
+  key.setAttribute('aria-hidden','true');
+  item.append(key,make('span',label+' ('+range+')'));
+  legend.append(item);
+ }
+ section.append(legend);
+ const totals=make('div',undefined,'risk-totals');
+ for(const [label,value,max] of [['Technical accessibility',result.technicalScore,90],['Vendor governance',result.governanceScore,10]]){
+  const item=make('div');
+  item.append(make('span',label),make('strong',value.toFixed(2)+' / '+max));
+  totals.append(item);
+ }
+ section.append(totals);
+ return section;
 }
 export function statusChart(summary,total,data) {
  const section=chart('Conformance status','status-chart');
