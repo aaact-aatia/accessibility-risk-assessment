@@ -1,5 +1,5 @@
 // Native charts: all values are visible text; visual bars are redundant.
-const palette = ["#14532d","#714500","#881f28","#25476b","#454545","#48356b"];
+const palette = ["#14532d","#fff4c2","#881f28","#e3f2ff","#454545","#f1e8ff"];
 const make = (tag, text, className) => {
  const n = document.createElement(tag);
  if(text !== undefined) n.textContent = text;
@@ -15,6 +15,7 @@ function bar(label, value, maximum, detail, color) {
  const fill = make('div',undefined,'chart-fill');
  fill.style.width = (maximum ? value/maximum*100 : 0)+'%';
  fill.style.backgroundColor = color;
+ if (['#fff4c2','#e3f2ff','#f1e8ff'].includes(color) && value > 0) fill.classList.add('chart-fill-light');
  track.append(fill); row.append(line,track);
  return row;
 }
@@ -44,9 +45,9 @@ function dataDialog(section, title, id, data) {
 export function overallChart(result) {
  const section=chart('Score breakdown','score-chart','h3');
  const list=make('ul',undefined,'chart-bars');
- list.append(bar('Overall score',result.overall,100,result.overall.toFixed(2)+' / 100',palette[3]),
- bar('Technical accessibility',result.technicalScore,90,result.technicalScore.toFixed(2)+' / 90',palette[0]),
- bar('Vendor governance',result.governanceScore,10,result.governanceScore.toFixed(2)+' / 10',palette[5]));
+ list.append(bar('Overall score',result.overall,100,result.overall.toFixed(2)+' / 100',palette[0]),
+ bar('Technical accessibility',result.technicalScore,90,result.technicalScore.toFixed(2)+' / 90',palette[3]),
+ bar('Vendor governance',result.governanceScore,10,result.governanceScore.toFixed(2)+' / 10',palette[2]));
  section.append(list);return section;
 }
 export function statusChart(summary,total,data) {
