@@ -105,7 +105,9 @@ async function init(){
  const response=await fetch('./data/scoring.json');
  if(!response.ok)throw Error('Unable to load scoring configuration.');
  config=await response.json();build();render();
+ // Update immediately as users type or select a response.
  form.addEventListener('input',render);
+ form.addEventListener('change',render);
  form.addEventListener('submit',event=>{event.preventDefault();render();$('report-heading').focus();});
  $('export').addEventListener('click',()=>{
   const a=collect(),blob=new Blob([JSON.stringify(a,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=el('a');
