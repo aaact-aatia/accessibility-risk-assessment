@@ -18,3 +18,8 @@
 
 /* Separate chart data-table buttons from the preceding chart. */
 .chart-dialog-button{margin-block-start:1rem}
+
+/* Allow table headings to wrap between words, never within a word. */
+thead th{overflow-wrap:normal;word-break:normal;hyphens:none}
+.table-scroll[aria-label="Criterion-level results"] tr > :nth-child(2),
+.table-scroll[aria-label="Criterion-level results"] tr > :nth-child(3){white-space:nowrap;overflow-wrap:normal}
