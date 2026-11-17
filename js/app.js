@@ -1,4 +1,5 @@
 import {score,summarize} from './scoring.js';
+import {overallChart,statusChart,severityChart} from './charts.js';
 const $ = id => document.getElementById(id);
 const el = (tag, text, attrs={}) => {
   const node = document.createElement(tag);
@@ -79,7 +80,7 @@ function render(){
  const severity=table('Responses by severity',['Severity',...s.statuses],s.severity.map(v=>[v.severity,...v.counts]));
  const technical=table('Criterion-level results',['Success criterion','Level','Severity','Response','Points awarded / possible','Notes / evidence'],r.technical.map(i=>[i.id+' '+i.title,i.level,i.severity,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.technicalNotes[i.id]||'—']));
  const governance=table('Governance results',['Question','Response','Points awarded / possible','Notes / evidence'],r.governance.map(i=>[i.title,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.governanceNotes[i.id]||'—']));
- target.replaceChildren(metrics,el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),status,severity,technical,el('h3','Vendor governance summary'),governance);
+ target.replaceChildren(metrics,overallChart(r),el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),statusChart(s,config.criteria.length,status),severityChart(s,severity),technical,el('h3','Vendor governance summary'),governance);
 }
 // Announce only changes to the score, progress or final risk rating.
 function returnStatus(result, complete) {
