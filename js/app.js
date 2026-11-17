@@ -65,10 +65,12 @@ function table(title,headers,rows){
  t.append(body);wrap.append(t);return wrap;
 }
 function metric(label,value){const d=el('div',undefined,{class:'metric'});d.append(el('span',label),el('strong',value));return d;}
+let previousStatus = null;
 function render(){
  const a=collect(),r=score(config,a),s=summarize(config,r),target=$('results');
  const valid=fields.filter(f=>f[3]).every(([id])=>controls.get(id).value.trim() && controls.get(id).validity.valid) && fields.every(([id])=>controls.get(id).validity.valid);
  const complete=!!r.risk && valid;
+ returnStatus(r, complete);
  $('report-state').textContent=complete?'Complete assessment · '+config.standard:'Incomplete assessment — '+r.answered+' of '+r.count+' responses entered. A final risk rating requires all responses and valid product information.';
  const metrics=el('div',undefined,{class:'metrics'});
  metrics.append(metric('Technical score',fmt(r.technicalScore)+' / 90'),metric('Governance score',fmt(r.governanceScore)+' / 10'),metric('Overall score',fmt(r.overall)+' / 100'),metric('Risk rating',complete?r.risk:'Pending'));
@@ -78,6 +80,14 @@ function render(){
  const technical=table('Criterion-level results',['Success criterion','Level','Severity','Response','Points awarded / possible','Notes / evidence'],r.technical.map(i=>[i.id+' '+i.title,i.level,i.severity,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.technicalNotes[i.id]||'—']));
  const governance=table('Governance results',['Question','Response','Points awarded / possible','Notes / evidence'],r.governance.map(i=>[i.title,i.status||'Unanswered',fmt(i.awarded)+' / '+i.points,a.governanceNotes[i.id]||'—']));
  target.replaceChildren(metrics,el('p','Risk bands: Low 90–100; Moderate 80–89.99; High 70–79.99; Critical below 70. Scores are not a certification of accessibility.'),el('h3','Product information'),info,el('h3','Technical accessibility summary'),status,severity,technical,el('h3','Vendor governance summary'),governance);
+}
+// Announce only changes to the score, progress or final risk rating.
+function returnStatus(result, complete) {
+ const message = result.answered+' of '+result.count+' responses completed. Current score: '+fmt(result.overall)+' out of 100.'+(complete?' Risk rating: '+result.risk+'.':' Final risk rating pending.');
+ if(previousStatus !== null && message !== previousStatus) {
+   $('assessment-status').textContent=message;
+ }
+ previousStatus=message;
 }
 function validateImport(a){
  if(!a || a.schemaVersion!==1 || a.methodologyVersion!==config.version || a.standard!==config.standard)throw Error('Unsupported assessment file or methodology version.');
