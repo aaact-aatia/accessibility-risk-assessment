@@ -104,7 +104,7 @@
       "id": "2.3.1",
       "title": "Three Flashes or Below Threshold",
       "level": "A",
-      "severity": "Medium",
+      "severity": "Critical",
       "points": 1.5
     },
     {
